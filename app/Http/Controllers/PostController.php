@@ -19,7 +19,7 @@ class PostController extends Controller
             ->paginate(3)
             ->withQueryString();
 
-        return Inertia::render('Posts/Index', [
+        return Inertia::render('posts/Index', [
             'posts' => $posts,
         ]);
     }
