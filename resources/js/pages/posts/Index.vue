@@ -1,7 +1,6 @@
 <script setup lang="ts">
     import { Head, Link as InertiaLink, router } from '@inertiajs/vue3';
     import { reactive } from 'vue';
-    import type { PropType } from 'vue';
     import { useDateFormatter } from '@/composables/useDateFormatter';
     import AppLayout from '@/layouts/AppLayout.vue';
     import type { BreadcrumbItem } from '@/types';
