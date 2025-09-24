@@ -64,6 +64,7 @@
 
     const page = usePage();
     const flashSuccess = computed(() => page.props.flash?.success);
+    const formError = computed(() => page.props.errors.content);
 </script>
 
 <template>
@@ -95,10 +96,10 @@
                                     focus:ring-blue-500 focus:border-blue-500"
                             placeholder="What's on your mind?">
                         </textarea>
-                        <div v-if="page.props.errors.content"
+                        <div v-if="formError"
                              class="text-red-600 text-sm mt-1"
                              role="alert">
-                            {{ page.props.errors.content }}
+                            {{ formError }}
                         </div>
                     </div>
 
