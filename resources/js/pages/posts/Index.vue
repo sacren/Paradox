@@ -63,11 +63,9 @@
     ];
 
     const page = usePage();
-    const flashSuccess = computed(() => page.props.flash?.success);
-    const formError = computed(() => page.props.errors.content);
-
+    const flashSuccess = computed(() => page.props.flash?.success ?? null);
+    const formError = computed(() => page.props.errors.content ?? null);
     const localFlash = ref(flashSuccess.value ?? null);
-
     let flashTimer: ReturnType<typeof setTimeout> | null = null;
 
     watch(
