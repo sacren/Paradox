@@ -1,6 +1,6 @@
 <script setup lang="ts">
     import { Head, Link as InertiaLink, router, usePage } from '@inertiajs/vue3';
-    import { reactive, computed } from 'vue';
+    import { reactive, computed, watch, ref, onBeforeUnmount } from 'vue';
     import { useDateFormatter } from '@/composables/useDateFormatter';
     import AppLayout from '@/layouts/AppLayout.vue';
     import type { BreadcrumbItem } from '@/types';
@@ -65,6 +65,37 @@
     const page = usePage();
     const flashSuccess = computed(() => page.props.flash?.success);
     const formError = computed(() => page.props.errors.content);
+
+    const localFlash = ref(flashSuccess.value ?? null);
+
+    let flashTimer: ReturnType<typeof setTimeout> | null = null;
+
+    watch(
+        () => page.props.flash?.success,
+        // clear any previous flash timer
+        (value) => {
+            if (flashTimer) {
+                clearTimeout(flashTimer);
+                flashTimer = null;
+            }
+
+            localFlash.value = value || null;
+
+            if (value) {
+                flashTimer = setTimeout(() => {
+                    localFlash.value = null;
+                }, 12000);
+            }
+        },
+        { immediate: true }
+    );
+
+    // clean up on unmount
+    onBeforeUnmount(() => {
+        if (flashTimer) {
+            clearTimeout(flashTimer);
+        }
+    });
 </script>
 
 <template>
@@ -73,10 +104,10 @@
         <div class="p-4 sm:p-6 max-w-4xl mx-auto space-y-8">
             <h1 class="text-2xl font-bold mb-6">All Posts</h1>
 
-            <div v-if="flashSuccess"
+            <div v-if="localFlash"
                 class="text-center text-sm font-medium text-green-600"
                 role="alert">
-                {{ flashSuccess }}
+                {{ localFlash }}
             </div>
 
             <!-- Create new post form -->
