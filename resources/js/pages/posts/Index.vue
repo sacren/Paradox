@@ -1,6 +1,6 @@
 <script setup lang="ts">
-    import { Head, Link as InertiaLink, router, usePage } from '@inertiajs/vue3';
-    import { reactive, computed, watch, ref, onBeforeUnmount } from 'vue';
+    import { Head, Link as InertiaLink, useForm, usePage } from '@inertiajs/vue3';
+    import { computed, watch, ref, onBeforeUnmount } from 'vue';
     import { useDateFormatter } from '@/composables/useDateFormatter';
     import AppLayout from '@/layouts/AppLayout.vue';
     import type { BreadcrumbItem } from '@/types';
@@ -36,21 +36,16 @@
 
     const { formatDate } = useDateFormatter();
 
-    // Make form data reactive
-    const form = reactive({
+    const form = useForm({
         title: '',
         content: '',
     });
 
-    const handleSubmit = () => {
-        router.post('/posts', form, {
+    const submitData = () => {
+        form.post('/posts', {
             preserveScroll: true,
             onSuccess: () => {
-                form.title = '';
-                form.content = '';
-            },
-            onError: (errors) => {
-                console.log(errors);
+                form.reset(); // automatically reset to initial values
             },
         });
     };
@@ -64,7 +59,6 @@
 
     const page = usePage();
     const flashSuccess = computed(() => page.props.flash?.success ?? null);
-    const formError = computed(() => page.props.errors.content ?? null);
     const localFlash = ref(flashSuccess.value ?? null);
     let flashTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -111,7 +105,7 @@
             <!-- Create new post form -->
             <section class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
                 <h2 class="text-xl font-semibold mb-4">Write a new post</h2>
-                <form @submit.prevent="handleSubmit" class="space-y-4">
+                <form @submit.prevent="submitData" class="space-y-4">
                     <!-- Content -->
                     <div>
                         <label for="content" class="sr-only">
@@ -125,10 +119,10 @@
                                     focus:ring-blue-500 focus:border-blue-500"
                             placeholder="What's on your mind?">
                         </textarea>
-                        <div v-if="formError"
+                        <div v-if="form.errors.content"
                              class="text-red-600 text-sm mt-1"
                              role="alert">
-                            {{ formError }}
+                            {{ form.errors.content }}
                         </div>
                     </div>
 
