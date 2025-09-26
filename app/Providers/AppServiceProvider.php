@@ -23,10 +23,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Inertia::share([
             'flash' => fn () => [
-                'success' => Session::get('success'),
-                'error' => Session::get('error'),
-                'warning' => Session::get('warning'),
-                'info' => Session::get('info'),
+                'success' => Session::get('success') ?? null,
+                'error' => Session::get('error') ?? null,
+                'warning' => Session::get('warning') ?? null,
+                'info' => Session::get('info') ?? null,
             ],
         ]);
     }
