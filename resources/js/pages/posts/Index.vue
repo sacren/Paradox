@@ -37,7 +37,6 @@
     const { formatDate } = useDateFormatter();
 
     const form = useForm({
-        title: '',
         content: '',
     });
 
