@@ -46,6 +46,7 @@
             onSuccess: () => {
                 form.reset(); // automatically reset to initial values
             },
+            // Idiomatic with no onError
         });
     };
 
