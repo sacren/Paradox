@@ -65,22 +65,24 @@
 
     watch(
         () => page.props.flash?.success,
-        // clear any previous flash timer
         (value) => {
+            // Do nothing when flash disappears from props
+            if (!value) {
+                return;
+            }
+
+            // reset timer if new flash message arrives
             if (flashTimer) {
                 clearTimeout(flashTimer);
                 flashTimer = null;
             }
 
-            localFlash.value = value || null;
+            localFlash.value = value;
 
-            if (value) {
-                flashTimer = setTimeout(() => {
-                    localFlash.value = null;
-                }, 12000);
-            }
+            flashTimer = setTimeout(() => {
+                localFlash.value = null;
+            }, 12000);
         },
-        { immediate: true }
     );
 
     // clean up on unmount
