@@ -1,5 +1,5 @@
 <script setup lang="ts">
-    import { Head, Link as InertiaLink, useForm, usePage } from '@inertiajs/vue3';
+    import { Head, Link as InertiaLink, useForm, usePage, router } from '@inertiajs/vue3';
     import { computed, watch, ref, onBeforeUnmount } from 'vue';
     import { useDateFormatter } from '@/composables/useDateFormatter';
     import AppLayout from '@/layouts/AppLayout.vue';
@@ -45,6 +45,7 @@
             preserveScroll: true,
             onSuccess: () => {
                 form.reset(); // automatically reset to initial values
+                router.reload();
             },
             // Idiomatic with no onError
         });
