@@ -59,6 +59,7 @@
     ];
 
     const page = usePage();
+    const currentUser = computed(() => page.props.auth.user ?? null);
     const flashSuccess = computed(() => page.props.flash?.success ?? null);
     const localFlash = ref(flashSuccess.value ?? null);
     let flashTimer: ReturnType<typeof setTimeout> | null = null;
