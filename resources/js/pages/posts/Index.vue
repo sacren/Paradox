@@ -6,6 +6,7 @@
     import type { BreadcrumbItem } from '@/types';
 
     interface User {
+        id: number;
         name: string;
     }
 
@@ -63,6 +64,9 @@
     const flashSuccess = computed(() => page.props.flash?.success ?? null);
     const localFlash = ref(flashSuccess.value ?? null);
     let flashTimer: ReturnType<typeof setTimeout> | null = null;
+    const isPostOwner = (post: Post): boolean => {
+        return currentUser.value?.id === post.user.id;
+    };
 
     watch(
         () => page.props.flash?.success,
