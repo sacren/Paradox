@@ -68,6 +68,17 @@
         return currentUser.value?.id === post.user.id;
     };
 
+    const deletePost = (postId: number) => {
+        if (confirm('Are you sure you want to delete this post?')) {
+            router.delete(`/posts/${postId}`, {
+                preserveScroll: true,
+                onSuccess: () => {
+                    // Optional: show success message
+                },
+            });
+        }
+    };
+
     watch(
         () => page.props.flash?.success,
         (value) => {
@@ -168,6 +179,15 @@
                     <!-- Post content -->
                     <div class="p-6">
                         <p class="text-gray-700 leading-relaxed">{{ post.content }}</p>
+
+                        <!-- Action buttons -->
+                        <div v-if="isPostOwner(post)" class="mt-4 space-x-2">
+                            <button
+                                @click="deletePost(post.id)"
+                                class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                Delete
+                            </button>
+                        </div>
                     </div>
                 </article>
             </div>
