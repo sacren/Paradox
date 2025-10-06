@@ -18,7 +18,7 @@ Route::get('dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::resource('posts', PostController::class)
-    ->only(['index', 'store'])
+    ->only(['index', 'store', 'destroy'])
     ->middleware(['auth', 'verified']);
 
 Route::get('logout', function () {
