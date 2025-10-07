@@ -68,7 +68,7 @@
         return currentUser.value?.id === post.user.id;
     };
 
-    const deletePost = (postId: number) => {
+    const deletePost = (postId: number): void => {
         if (confirm('Are you sure you want to delete this post?')) {
             router.delete(`/posts/${postId}`, {
                 preserveScroll: true,
