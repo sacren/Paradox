@@ -19,6 +19,12 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('user')
+            ->withCount([
+                'likes', // total likes -> adds likes_count
+                'likes as is_liked' => function ($query) { // is liked -> 0 or 1
+                    $query->where('user_id', Auth::id());
+                }
+            ])
             ->latest()
             ->paginate(3)
             ->withQueryString();
