@@ -16,6 +16,7 @@
         content: string;
         created_at: string;
         user: User;
+        is_liked: number;
     }
 
     interface PaginationLink {
