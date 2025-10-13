@@ -80,6 +80,14 @@
         }
     };
 
+    const toggleLike = (postId: number): void => {
+        router.post(`/posts/${postId}/like`, {}, {
+            preserveScroll: true,
+            // Optional: optimistic UI update (advanced)
+            // But for now, just reload or rely on Inertia's automatic re-render
+        });
+    };
+
     watch(
         () => page.props.flash?.success,
         (value) => {
