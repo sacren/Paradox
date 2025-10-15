@@ -17,6 +17,7 @@
         created_at: string;
         user: User;
         is_liked: number;
+        likes_count: number;
     }
 
     interface PaginationLink {
@@ -209,6 +210,9 @@
                                 </svg>
                                 <span>{{ post.is_liked ? 'Unlike' : 'Like' }}</span>
                             </button>
+
+                            <!-- Show like count -->
+                            <span class="text-sm text-gray-500">{{ post.likes_count || 0 }} likes</span>
                         </div>
 
                         <!-- Action buttons -->
