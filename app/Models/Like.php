@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Like extends Model
+class Like extends Pivot
 {
     /** @use HasFactory<\Database\Factories\LikeFactory> */
     use HasFactory;
+
+    /** Explicit table name */
+    protected $table = 'likes';
 
     protected $fillable = ['user_id', 'post_id'];
 
