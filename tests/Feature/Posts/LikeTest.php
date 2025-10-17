@@ -14,10 +14,9 @@ test('a post can be liked by users', function () {
         'post_id' => $post->id,
     ]);
 
-    // Disambiguate with table name
-    $likedUserIds = $post->likedBy()->pluck('users.id');
-    $likedPostIds = $user->likedPosts()->pluck('posts.id');
+    expect($post->likedBy)->toHaveCount(1);
+    expect($post->likedBy->first()->id)->toBe($user->id);
 
-    expect($likedUserIds)->toContain($user->id);
-    expect($likedPostIds)->toContain($post->id);
+    expect($user->likedPosts)->toHaveCount(1);
+    expect($user->likedPosts->first()->id)->toBe($post->id);
 });
