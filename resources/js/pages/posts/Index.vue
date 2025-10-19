@@ -190,38 +190,36 @@
                     <div class="p-6">
                         <p class="text-gray-700 leading-relaxed">{{ post.content }}</p>
 
-                        <!-- Like button -->
                         <div class="mt-4 flex items-center space-x-4">
-                            <button
-                                @click="toggleLike(post.id)"
-                                class="text-sm font-medium flex items-center space-x-1"
-                                :class="post.is_liked
-                                    ? 'text-red-600 hover:text-red-800'
-                                    : 'text-gray-600 hover:text-blue-600'">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    class="h-5 w-5"
-                                    viewBox="0 0 20 20"
-                                    fill="currentColor">
-                                    <path
-                                        fill-rule="evenodd"
-                                        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span>{{ post.is_liked ? 'Unlike' : 'Like' }}</span>
-                            </button>
+                            <!-- Action buttons -->
+                            <div v-if="isPostOwner(post)" class="space-x-2">
+                                <button @click="deletePost(post.id)"
+                                    class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                    Delete
+                                </button>
+                            </div>
 
-                            <!-- Show like count -->
-                            <span class="text-sm text-gray-500">{{ post.likes_count || 0 }} likes</span>
-                        </div>
+                            <!-- Like button -->
+                            <div class="flex items-center space-x-4">
+                                <button @click="toggleLike(post.id)"
+                                     class="text-sm font-medium flex items-center space-x-1"
+                                     :class="post.is_liked
+                                             ? 'text-red-600 hover:text-red-800'
+                                             : 'text-gray-600 hover:text-blue-600'">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         class="h-5 w-5"
+                                         viewBox="0 0 20 20"
+                                         fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                                d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                                clip-rule="evenodd" />
+                                    </svg>
+                                    <span>{{ post.is_liked ? 'Unlike' : 'Like' }}</span>
+                                </button>
 
-                        <!-- Action buttons -->
-                        <div v-if="isPostOwner(post)" class="mt-4 space-x-2">
-                            <button
-                                @click="deletePost(post.id)"
-                                class="text-red-600 hover:text-red-800 text-sm font-medium">
-                                Delete
-                            </button>
+                                <!-- Show like count -->
+                                <span class="text-sm text-gray-500">{{ post.likes_count || 0 }} likes</span>
+                            </div>
                         </div>
                     </div>
                 </article>
