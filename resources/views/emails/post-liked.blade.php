@@ -1,10 +1,14 @@
 <x-mail::message>
-# Introduction
+# 👍 {{ $liker->name }} liked your post!
 
-The body of your message.
+Hi {{ optional($post->user)->name ?? 'there' }},
 
-<x-mail::button :url="''">
-Button Text
+Your post received a like from **{{ $liker->name }}**:
+
+> "{{ Str::limit($post->content, 120) }}"
+
+<x-mail::button :url="route('posts.index')">
+View All Posts
 </x-mail::button>
 
 Thanks,<br>
