@@ -63,9 +63,10 @@
 
     const page = usePage();
     const currentUser = computed(() => page.props.auth.user ?? null);
-    const flashSuccess = computed(() => page.props.flash?.success ?? null);
-    const localFlash = ref(flashSuccess.value ?? null);
+    const localFlash = ref<{ type: 'success' | 'info'; message: string } | null>(null);
+
     let flashTimer: ReturnType<typeof setTimeout> | null = null;
+
     const isPostOwner = (post: Post): boolean => {
         return currentUser.value?.id === post.user.id;
     };
@@ -90,10 +91,10 @@
     };
 
     watch(
-        () => page.props.flash?.success,
-        (value) => {
+        () => ({ success: page.props.flash?.success, info: page.props.flash?.info }),
+        (newFlash) => {
             // Do nothing when flash disappears from props
-            if (!value) {
+            if (!newFlash.success && !newFlash.info) {
                 return;
             }
 
@@ -103,12 +104,17 @@
                 flashTimer = null;
             }
 
-            localFlash.value = value;
+            if (newFlash.success) {
+                localFlash.value = { type: 'success', message: newFlash.success };
+            } else if (newFlash.info) {
+                localFlash.value = { type: 'info', message: newFlash.info };
+            }
 
             flashTimer = setTimeout(() => {
                 localFlash.value = null;
             }, 12000);
         },
+        { immediate: true }
     );
 
     // clean up on unmount
@@ -126,9 +132,11 @@
             <h1 class="text-2xl font-bold mb-6">All Posts</h1>
 
             <div v-if="localFlash"
-                class="text-center text-sm font-medium text-green-600"
-                role="alert">
-                {{ localFlash }}
+                 class="text-center text-sm font-medium px-4 py-2 rounded mb-4 max-w-md mx-auto"
+                 :class="{ 'bg-green-100 text-green-800': localFlash.type === 'success',
+                         'bg-blue-100 text-blue-800': localFlash.type === 'info' }"
+                 role="alert">
+                {{ localFlash.message }}
             </div>
 
             <!-- Create new post form -->
