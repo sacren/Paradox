@@ -29,6 +29,9 @@ class LikeController extends Controller
             $post->likes()->create(['user_id' => $userId]);
             $message = 'Post liked!';
 
+            // Load user relationship
+            $post->load('user');
+
             // Send email notification to post owner
             if ($post->user && $post->user->email) {
                 Mail::to($post->user->email)->queue(
