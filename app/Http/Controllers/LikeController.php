@@ -31,7 +31,7 @@ class LikeController extends Controller
 
             // Send email notification to post owner
             if ($post->user && $post->user->email) {
-                Mail::to($post->user->email)->send(
+                Mail::to($post->user->email)->queue(
                     new PostLikedNotification($post, $user)
                 );
             }
