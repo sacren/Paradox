@@ -54,3 +54,15 @@ it('does not send email when unliking (starting from liked state)', function () 
 
     Mail::assertNothingQueued(); // Because we never faked before the like
 });
+
+it('does not send email when post owner likes their own post', function () {
+    Mail::fake();
+
+    $user = User::factory()->create();
+    $post = Post::factory()->create(['user_id' => $user->id]);
+
+    actingAs($user)
+        ->post(route('posts.like', $post));
+
+    Mail::assertNothingQueued();
+});
